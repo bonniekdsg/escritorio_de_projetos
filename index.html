@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escritório de Projetos - MPAC</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Iconify (Solar Icons) -->
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Noto Sans', sans-serif; }
+        html { scroll-behavior: smooth; }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .btn-border-animate {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-border-animate::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, #80352F, transparent 30%);
+            animation: rotate 3s linear infinite;
+        }
+        .btn-border-animate::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: white;
+            border-radius: 9999px;
+            z-index: 0;
+        }
+        .btn-border-animate > * {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.1"
+  }
+}
+</script>
+</head>
+<body class="bg-[#F5F5F7] text-[#1D1D1F] antialiased selection:bg-[#A54F46] selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-200/60 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <img src="assets/logo_mpac_secplan.svg" alt="MPAC Logo" class="h-14 w-auto cursor-pointer hover:opacity-90 transition-opacity">
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#" class="group relative text-[13px] font-medium text-slate-600 hover:text-[#953E34] transition-colors py-2">
+                    Página Principal
+                    <span class="absolute bottom-1 left-0 w-full h-[2px] bg-[#953E34] rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left opacity-80"></span>
+                </a>
+                <a href="#" class="group relative text-[13px] font-medium text-slate-600 hover:text-[#953E34] transition-colors py-2">
+                    Sobre
+                    <span class="absolute bottom-1 left-0 w-full h-[2px] bg-[#953E34] rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left opacity-80"></span>
+                </a>
+                <a href="#" class="group relative text-[13px] font-medium text-slate-600 hover:text-[#953E34] transition-colors py-2">
+                    Atos e Instruções
+                    <span class="absolute bottom-1 left-0 w-full h-[2px] bg-[#953E34] rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left opacity-80"></span>
+                </a>
+                <a href="#" class="group relative text-[13px] font-medium text-slate-600 hover:text-[#953E34] transition-colors py-2">
+                    Fale Conosco
+                    <span class="absolute bottom-1 left-0 w-full h-[2px] bg-[#953E34] rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left opacity-80"></span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-800 focus:outline-none hover:text-[#953E34] transition-colors p-1">
+                <iconify-icon icon="solar:hamburger-menu-linear" width="24" height="24" id="menu-icon"></iconify-icon>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-b border-slate-200 px-6 py-6 absolute w-full shadow-xl">
+            <div class="flex flex-col gap-2">
+                <a href="#" class="block px-4 py-3 text-sm font-medium text-slate-600 rounded-lg hover:text-[#953E34] hover:bg-[#953E34]/5 transition-all">Página Principal</a>
+                <a href="#" class="block px-4 py-3 text-sm font-medium text-slate-600 rounded-lg hover:text-[#953E34] hover:bg-[#953E34]/5 transition-all">Sobre</a>
+                <a href="#" class="block px-4 py-3 text-sm font-medium text-slate-600 rounded-lg hover:text-[#953E34] hover:bg-[#953E34]/5 transition-all">Atos e Instruções</a>
+                <a href="#" class="block px-4 py-3 text-sm font-medium text-slate-600 rounded-lg hover:text-[#953E34] hover:bg-[#953E34]/5 transition-all">Fale Conosco</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative w-full overflow-hidden bg-[#80352F] py-24 md:py-32 lg:py-40">
+        <!-- Parallax Background Container -->
+        <div id="hero-bg" class="absolute inset-0 w-full h-full pointer-events-none will-change-transform">
+            <!-- Background Image -->
+            <div class="absolute inset-0 bg-[url('assets/bg_hero.jpg')] bg-cover bg-center bg-no-repeat"></div>
+            <!-- Gradient Overlay (Reduced opacity for better image visibility) -->
+            <div class="absolute inset-0 bg-gradient-to-br from-[#A54F46]/70 to-[#80352F]/70 mix-blend-multiply"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#80352F]/90 via-transparent to-transparent"></div>
+            
+            <div class="absolute inset-0 bg-black/20"></div>
+
+            <div class="absolute top-0 left-0 w-96 h-96 bg-white opacity-5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+            <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#0B252C] opacity-10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
+        </div>
+
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <!-- Tag -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-8 hover:bg-white/20 transition-colors cursor-default shadow-sm">
+                <iconify-icon icon="solar:stars-minimalistic-bold" class="text-white" width="16" height="16"></iconify-icon>
+                <span class="text-xs font-semibold text-white tracking-widest uppercase">Ideia à Ação</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-semibold text-white tracking-tight mb-6 drop-shadow-lg">
+                Escritório de Projetos
+            </h1>
+            
+            <p class="text-xl md:text-2xl font-normal text-white/90 leading-relaxed max-w-3xl mx-auto mb-10">
+                Transformando ideias em iniciativas que fortalecem o Ministério Público do Estado do Acre e a sociedade.
+            </p>
+
+            <!-- CTA -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#" class="btn-border-animate group inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#80352F] rounded-full text-base font-bold shadow-[0_4px_14px_0_rgba(0,0,0,0.1)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.23)] hover:scale-[1.02] transition-all duration-300">
+                    <span class="relative z-10">Explorar Projetos</span>
+                    <iconify-icon icon="solar:arrow-right-linear" width="20" height="20" class="transition-transform group-hover:translate-x-1 relative z-10"></iconify-icon>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow w-full max-w-[1400px] mx-auto px-6 py-20 md:py-28 space-y-20 md:space-y-32">
+        
+        <!-- Projects Grid Section -->
+        <section>
+            <div class="text-center mb-20">
+                <div class="inline-flex items-center justify-center p-2 mb-4 bg-[#F5F5F7] rounded-full">
+                   <iconify-icon icon="solar:widget-2-linear" class="text-[#953E34]" width="24" height="24"></iconify-icon>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-[#1D1D1F] tracking-tight mb-5">
+                    Nossos Projetos e Serviços
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-[#953E34] to-transparent mx-auto rounded-full mb-6 opacity-30"></div>
+                <p class="text-lg md:text-xl text-slate-500 font-normal max-w-2xl mx-auto leading-relaxed">
+                    Explore as iniciativas e ferramentas que impulsionam a inovação e a eficiência no MPAC.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8 isolate">
+                <!-- Card 1: Vitrine -->
+                <div class="group bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] transition-[box-shadow,transform,border-color] duration-500 hover:-translate-y-1 flex flex-col h-full border border-slate-100/50 hover:border-[#953E34]/30 relative overflow-hidden">
+                    <!-- Watermark Icon Removed -->
+
+                    <div class="mb-6 relative z-10"><iconify-icon icon="solar:star-linear" width="40" height="40" class="text-[#953E34]"></iconify-icon></div>
+                    <h3 class="text-xl font-semibold text-[#1D1D1F] mb-3 tracking-tight relative z-10">Vitrine de Resolutividade</h3>
+                    <p class="text-base text-slate-500 leading-relaxed mb-8 flex-grow relative z-10">Conheça projetos que geram soluções eficazes para a sociedade.</p>
+                    <a href="#" class="inline-flex items-center text-[15px] font-medium text-[#953E34] group-hover:text-[#7A2E26] transition-colors relative z-10">
+                        Abrir hotsite <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="ml-1 transition-transform group-hover:translate-x-0.5"></iconify-icon>
+                    </a>
+                </div>
+                
+                <!-- Card 2: Ação Impacto -->
+                <div class="group bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] transition-[box-shadow,transform,border-color] duration-500 hover:-translate-y-1 flex flex-col h-full border border-slate-100/50 hover:border-[#953E34]/30 relative overflow-hidden">
+                    <!-- Watermark Icon Removed -->
+
+                    <div class="mb-6 relative z-10"><iconify-icon icon="solar:eye-linear" width="40" height="40" class="text-[#953E34]"></iconify-icon></div>
+                    <h3 class="text-xl font-semibold text-[#1D1D1F] mb-3 tracking-tight relative z-10">Ação Impacto</h3>
+                    <p class="text-base text-slate-500 leading-relaxed mb-8 flex-grow relative z-10">Iniciativas de alto impacto com resultados transformadores.</p>
+                    <a href="#" class="inline-flex items-center text-[15px] font-medium text-[#953E34] group-hover:text-[#7A2E26] transition-colors relative z-10">
+                        Abrir hotsite <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="ml-1 transition-transform group-hover:translate-x-0.5"></iconify-icon>
+                    </a>
+                </div>
+
+                <!-- Card 3: Prêmio -->
+                <div class="group bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] transition-[box-shadow,transform,border-color] duration-500 hover:-translate-y-1 flex flex-col h-full border border-slate-100/50 hover:border-[#953E34]/30 relative overflow-hidden">
+                    <!-- Watermark Icon Removed -->
+
+                    <div class="mb-6 relative z-10"><iconify-icon icon="solar:cup-first-linear" width="40" height="40" class="text-[#953E34]"></iconify-icon></div>
+                    <h3 class="text-xl font-semibold text-[#1D1D1F] mb-3 tracking-tight relative z-10">Prêmio Gestão e Inovação</h3>
+                    <p class="text-base text-slate-500 leading-relaxed mb-8 flex-grow relative z-10">Reconhecimento às melhores práticas de gestão e inovação.</p>
+                    <a href="#" class="inline-flex items-center text-[15px] font-medium text-[#953E34] group-hover:text-[#7A2E26] transition-colors relative z-10">
+                        Abrir hotsite <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="ml-1 transition-transform group-hover:translate-x-0.5"></iconify-icon>
+                    </a>
+                </div>
+
+                <!-- Card 4: Banco Nacional -->
+                <div class="group bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] transition-[box-shadow,transform,border-color] duration-500 hover:-translate-y-1 flex flex-col h-full border border-slate-100/50 hover:border-[#953E34]/30 relative overflow-hidden">
+                    <!-- Watermark Icon Removed -->
+
+                    <div class="mb-6 relative z-10"><iconify-icon icon="solar:magnifer-linear" width="40" height="40" class="text-[#953E34]"></iconify-icon></div>
+                    <h3 class="text-xl font-semibold text-[#1D1D1F] mb-3 tracking-tight relative z-10">Banco Nacional de Projetos</h3>
+                    <p class="text-base text-slate-500 leading-relaxed mb-8 flex-grow relative z-10">Acesse o repositório de projetos do Conselho Nacional do MP.</p>
+                    <a href="#" class="inline-flex items-center text-[15px] font-medium text-[#953E34] group-hover:text-[#7A2E26] transition-colors relative z-10">
+                        Abrir site <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="ml-1 transition-transform group-hover:translate-x-0.5"></iconify-icon>
+                    </a>
+                </div>
+
+                <!-- Card 5: SIGA -->
+                <div class="group bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] transition-[box-shadow,transform,border-color] duration-500 hover:-translate-y-1 flex flex-col h-full border border-slate-100/50 hover:border-[#953E34]/30 relative overflow-hidden">
+                    <!-- Watermark Icon Removed -->
+
+                    <div class="mb-6 relative z-10"><iconify-icon icon="solar:laptop-minimalistic-linear" width="40" height="40" class="text-[#953E34]"></iconify-icon></div>
+                    <h3 class="text-xl font-semibold text-[#1D1D1F] mb-3 tracking-tight relative z-10">Módulo Projetos - SIGA</h3>
+                    <p class="text-base text-slate-500 leading-relaxed mb-8 flex-grow relative z-10">Sistema integrado para gestão e acompanhamento de projetos.</p>
+                    <a href="#" class="inline-flex items-center text-[15px] font-medium text-[#953E34] group-hover:text-[#7A2E26] transition-colors relative z-10">
+                        Abrir Módulo <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="ml-1 transition-transform group-hover:translate-x-0.5"></iconify-icon>
+                    </a>
+                </div>
+
+                <!-- Card 6: Expojud -->
+                <div class="group bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] transition-[box-shadow,transform,border-color] duration-500 hover:-translate-y-1 flex flex-col h-full border border-slate-100/50 hover:border-[#953E34]/30 relative overflow-hidden">
+                    <!-- Watermark Icon Removed -->
+
+                    <div class="mb-6 relative z-10"><iconify-icon icon="solar:lightbulb-minimalistic-linear" width="40" height="40" class="text-[#953E34]"></iconify-icon></div>
+                    <h3 class="text-xl font-semibold text-[#1D1D1F] mb-3 tracking-tight relative z-10">Expojud</h3>
+                    <p class="text-base text-slate-500 leading-relaxed mb-8 flex-grow relative z-10">Feira de exposição sobre inovação e tecnologia no judiciário.</p>
+                    <a href="#" class="inline-flex items-center text-[15px] font-medium text-[#953E34] group-hover:text-[#7A2E26] transition-colors relative z-10">
+                        Abrir hotsite <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="ml-1 transition-transform group-hover:translate-x-0.5"></iconify-icon>
+                    </a>
+                </div>
+
+                <!-- Card 7: Editais -->
+                <div class="group bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] transition-[box-shadow,transform,border-color] duration-500 hover:-translate-y-1 flex flex-col h-full border border-slate-100/50 hover:border-[#953E34]/30 relative overflow-hidden">
+                    <!-- Watermark Icon Removed -->
+
+                    <div class="mb-6 relative z-10"><iconify-icon icon="solar:document-text-linear" width="40" height="40" class="text-[#953E34]"></iconify-icon></div>
+                    <h3 class="text-xl font-semibold text-[#1D1D1F] mb-3 tracking-tight relative z-10">Editais e Premiações</h3>
+                    <p class="text-base text-slate-500 leading-relaxed mb-8 flex-grow relative z-10">Consulte informações sobre editais e prêmios em aberto.</p>
+                    <a href="#" class="inline-flex items-center text-[15px] font-medium text-[#953E34] group-hover:text-[#7A2E26] transition-colors relative z-10">
+                        Pasta 4 <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="ml-1 transition-transform group-hover:translate-x-0.5"></iconify-icon>
+                    </a>
+                </div>
+
+                <!-- Card 8: Solicitar (Primary) -->
+                <div class="group bg-[#852D26] rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(133,45,38,0.3),0_10px_20px_-2px_rgba(133,45,38,0.2)] hover:shadow-[0_25px_50px_-12px_rgba(133,45,38,0.4)] transition-[box-shadow,transform,border-color] duration-500 hover:-translate-y-1 flex flex-col h-full border border-[#852D26] hover:border-[#A54F46] relative overflow-hidden">
+                    <!-- Watermark Icon Removed -->
+
+                    <div class="mb-6 relative z-10"><iconify-icon icon="solar:login-2-linear" width="40" height="40" class="text-white"></iconify-icon></div>
+                    <h3 class="text-xl font-semibold text-white mb-3 tracking-tight relative z-10">Solicitar Serviços</h3>
+                    <p class="text-base text-white/80 leading-relaxed mb-8 flex-grow relative z-10">Acesse a plataforma para submeter novos projetos ou solicitar serviços.</p>
+                    <a href="#" class="inline-flex items-center text-[15px] font-medium text-white hover:text-white/80 transition-colors relative z-10">
+                        Abrir login Sigep <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="ml-1 transition-transform group-hover:translate-x-0.5"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section>
+            <div class="text-center mb-16">
+                 <div class="inline-flex items-center gap-2 mb-4 px-3 py-1 bg-white border border-slate-200 rounded-full shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-[#953E34] animate-pulse"></span>
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-widest">Atualizações</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-[#1D1D1F] tracking-tight">Notícias e Destaques</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-[0_20px_40px_-5px_rgba(0,0,0,0.1)] transition-all duration-300 border border-slate-100 hover:border-[#953E34] hover:-translate-y-1 flex flex-col h-full relative overflow-hidden">
+                    <!-- Watermark Icon Removed -->
+                    
+                    <div class="flex items-center justify-between mb-4 relative z-10">
+                        <span class="inline-block px-3 py-1 text-[11px] font-bold text-[#953E34] bg-[#953E34]/5 rounded-full uppercase tracking-wider">Novidades</span>
+                        <span class="text-xs text-slate-400 font-medium">12 Dez, 2024</span>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold text-[#1D1D1F] mb-4 leading-snug group-hover:text-[#953E34] transition-colors relative z-10">MPAC lança novo sistema de gestão de projetos</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-8 flex-grow relative z-10">O novo sistema, desenvolvido internamente, visa otimizar o fluxo de trabalho, melhorar a colaboração e aumentar a transparência dos projetos em andamento.</p>
+                    <a href="#" class="inline-flex items-center text-sm font-bold text-[#1D1D1F] group-hover:text-[#953E34] transition-colors uppercase tracking-wide relative z-10">
+                        Leia Mais <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="ml-2 transition-transform group-hover:translate-x-1 text-[#953E34]"></iconify-icon>
+                    </a>
+                </div>
+                <div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-[0_20px_40px_-5px_rgba(0,0,0,0.1)] transition-all duration-300 border border-slate-100 hover:border-[#953E34] hover:-translate-y-1 flex flex-col h-full relative overflow-hidden">
+                    <!-- Watermark Icon Removed -->
+
+                    <div class="flex items-center justify-between mb-4 relative z-10">
+                        <span class="inline-block px-3 py-1 text-[11px] font-bold text-[#953E34] bg-[#953E34]/5 rounded-full uppercase tracking-wider">Prêmios</span>
+                        <span class="text-xs text-slate-400 font-medium">08 Nov, 2024</span>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold text-[#1D1D1F] mb-4 leading-snug group-hover:text-[#953E34] transition-colors relative z-10">Projeto 'Cidadania nas Escolas' é destaque em premiação nacional</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-8 flex-grow relative z-10">A iniciativa do MPAC, que leva noções de direito e cidadania para estudantes da rede pública, foi reconhecida por seu impacto social e educacional.</p>
+                    <a href="#" class="inline-flex items-center text-sm font-bold text-[#1D1D1F] group-hover:text-[#953E34] transition-colors uppercase tracking-wide relative z-10">
+                        Leia Mais <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="ml-2 transition-transform group-hover:translate-x-1 text-[#953E34]"></iconify-icon>
+                    </a>
+                </div>
+                <div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-[0_20px_40px_-5px_rgba(0,0,0,0.1)] transition-all duration-300 border border-slate-100 hover:border-[#953E34] hover:-translate-y-1 flex flex-col h-full relative overflow-hidden">
+                    <!-- Watermark Icon Removed -->
+
+                    <div class="flex items-center justify-between mb-4 relative z-10">
+                        <span class="inline-block px-3 py-1 text-[11px] font-bold text-[#953E34] bg-[#953E34]/5 rounded-full uppercase tracking-wider">Capacitação</span>
+                        <span class="text-xs text-slate-400 font-medium">25 Out, 2024</span>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold text-[#1D1D1F] mb-4 leading-snug group-hover:text-[#953E34] transition-colors relative z-10">Escritório de Projetos promove capacitação sobre metodologias ágeis</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-8 flex-grow relative z-10">Servidores e membros do Ministério Público participaram de um workshop focado em Scrum e Kanban para aprimorar a gestão de suas iniciativas.</p>
+                    <a href="#" class="inline-flex items-center text-sm font-bold text-[#1D1D1F] group-hover:text-[#953E34] transition-colors uppercase tracking-wide relative z-10">
+                        Leia Mais <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="ml-2 transition-transform group-hover:translate-x-1 text-[#953E34]"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Section (BI, Services, Contact) -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            
+            <!-- Painel BI -->
+            <div class="lg:col-span-5 flex flex-col">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-1 h-8 bg-[#953E34] rounded-full"></div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#1D1D1F] tracking-tight">Painel BI</h2>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm flex-grow min-h-[300px] flex flex-col justify-between">
+                   <div class="mb-4">
+                      <h4 class="text-lg font-semibold text-slate-700">Projetos Ativos</h4>
+                      <p class="text-slate-400 text-sm">Visão geral do semestre</p>
+                   </div>
+                   
+                   <!-- Chart.js Canvas Container -->
+                   <div class="h-48 w-full mt-4 relative">
+                        <canvas id="projectChart"></canvas>
+                   </div>
+
+                   <div class="flex items-center gap-3 mt-6 pt-6 border-t border-slate-100">
+                     <div class="p-2 bg-slate-100 rounded-lg">
+                        <iconify-icon icon="solar:monitor-camera-linear" width="20" height="20" class="text-slate-500"></iconify-icon>
+                     </div>
+                     <p className="text-xs text-slate-500">
+                       Visualização de dados e métricas dos projetos em andamento.
+                     </p>
+                   </div>
+                </div>
+            </div>
+
+            <!-- Serviços -->
+            <div class="lg:col-span-4">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-1 h-8 bg-[#953E34] rounded-full"></div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#1D1D1F] tracking-tight">Serviços</h2>
+                </div>
+                <div class="flex flex-col gap-6">
+                    <div class="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100/50 hover:border-[#953E34]/20 transition-colors">
+                        <iconify-icon icon="solar:check-circle-linear" width="24" height="24" class="text-[#953E34] shrink-0 mt-0.5"></iconify-icon>
+                        <p class="text-slate-600 text-[15px] leading-relaxed">Gestão técnica de projetos e ações institucionais estratégicas;</p>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100/50 hover:border-[#953E34]/20 transition-colors">
+                        <iconify-icon icon="solar:check-circle-linear" width="24" height="24" class="text-[#953E34] shrink-0 mt-0.5"></iconify-icon>
+                        <p class="text-slate-600 text-[15px] leading-relaxed">Auxílio na elaboração de projetos;</p>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100/50 hover:border-[#953E34]/20 transition-colors">
+                        <iconify-icon icon="solar:check-circle-linear" width="24" height="24" class="text-[#953E34] shrink-0 mt-0.5"></iconify-icon>
+                        <p class="text-slate-600 text-[15px] leading-relaxed">Apoio na submissão de projetos em premiações e exposições nacionais e internacionais.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fale Conosco -->
+            <div class="lg:col-span-3">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-1 h-8 bg-[#953E34] rounded-full"></div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#1D1D1F] tracking-tight">Fale Conosco</h2>
+                </div>
+                <div class="space-y-8">
+                    <div class="flex gap-4 group">
+                        <div class="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center shrink-0 border border-slate-100 group-hover:border-[#953E34]/30 transition-colors">
+                            <iconify-icon icon="solar:map-point-linear" width="20" height="20" class="text-[#953E34]"></iconify-icon>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-[#1D1D1F] text-sm mb-1">Endereço</h4>
+                            <p class="text-slate-500 text-sm leading-relaxed">Rua Marechal Deodoro, 472 Ipase, Rio Branco, Acre</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 group">
+                        <div class="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center shrink-0 border border-slate-100 group-hover:border-[#953E34]/30 transition-colors">
+                            <iconify-icon icon="solar:phone-calling-linear" width="20" height="20" class="text-[#953E34]"></iconify-icon>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-[#1D1D1F] text-sm mb-1">Telefone</h4>
+                            <p class="text-slate-500 text-sm">(68) 3210-3180</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 group">
+                        <div class="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center shrink-0 border border-slate-100 group-hover:border-[#953E34]/30 transition-colors">
+                            <iconify-icon icon="solar:letter-linear" width="20" height="20" class="text-[#953E34]"></iconify-icon>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-[#1D1D1F] text-sm mb-1">Email</h4>
+                            <p class="text-slate-500 text-sm break-all">escritorio.projetos@mpac.mp.br</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+      
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
+            <p>&copy; <span id="year"></span> Ministério Público do Estado do Acre. Todos os direitos reservados.</p>
+            <div class="flex gap-4 mt-4 md:mt-0">
+                <a href="https://www.mpac.mp.br/" target="_blank" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-[#953E34]/10 hover:text-[#953E34] transition-all" title="Site Oficial">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="18" height="18" fill="currentColor">
+                        <path fill-rule="evenodd" d="M163.95,78.07v43.57c3.32,2.61,6.48,5.41,9.45,8.4,3.64,3.66,7.03,7.62,10.11,11.83,1.84,2.51,3.56,5.1,5.17,7.77V50.18l-.4.71c-1.74,3.01-3.85,5.79-6.16,8.8-1.37,1.78-2.77,3.49-4.2,5.13-1.44,1.64-2.95,3.25-4.53,4.84h0s0,0,0,0c-2.97,2.99-6.13,5.79-9.45,8.4"/>
+                        <path fill-rule="evenodd" d="M11.96,46.65c1.82,3.29,3.81,6.48,5.97,9.55,3.39,4.82,7.18,9.33,11.3,13.48,2.38,2.39,4.87,4.66,7.47,6.81v46.76c-2.6,2.15-5.09,4.42-7.47,6.81l-.09.09c-4.1,4.13-7.86,8.61-11.21,13.39-2.16,3.07-4.15,6.25-5.97,9.55V46.65Z"/>
+                        <rect x="88.91" y="136.19" width="22.29" height="22.4"/>
+                        <path d="M175.54,61.96c1.43-1.64,2.8-3.3,4.08-4.97,2.24-2.91,4.28-5.61,5.93-8.46,1.32-2.28,2.4-4.68,3.15-7.4h-22.3c-1.31,1.91-2.7,3.77-4.16,5.55-1.67,2.04-3.41,3.97-5.21,5.78-7.33,7.36-16.09,13.3-25.84,17.36-9.38,3.9-19.65,6.06-30.41,6.06s-21.04-2.16-30.42-6.06c-9.75-4.06-18.51-9.99-25.84-17.36h0s0,0,0,0c-1.82-1.83-3.56-3.76-5.21-5.77-1.46-1.79-2.85-3.64-4.16-5.55H11.96c2.2,4.35,4.7,8.52,7.48,12.47,3.27,4.65,6.94,9.02,10.96,13.06,9.18,9.23,20.14,16.66,32.31,21.73,11.72,4.88,24.58,7.57,38.07,7.57s26.35-2.7,38.06-7.57c12.17-5.07,23.13-12.5,32.31-21.73h0c1.49-1.5,2.96-3.07,4.39-4.7"/>
+                        <path d="M175.54,132.93c1.43,1.41,2.8,2.83,4.08,4.26,2.24,2.5,4.28,4.81,5.93,7.26,1.32,1.96,2.4,4.02,3.15,6.35h-22.3c-1.31-1.64-2.7-3.23-4.16-4.76-1.67-1.75-3.41-3.41-5.21-4.96-7.33-6.32-16.09-11.41-25.84-14.89-9.38-3.35-19.65-5.2-30.41-5.2s-21.04,1.85-30.42,5.2c-9.75,3.48-18.51,8.58-25.84,14.89h0s0,0,0,0c-1.82,1.57-3.56,3.23-5.21,4.95-1.46,1.53-2.85,3.12-4.16,4.76H11.96c2.2-3.73,4.7-7.31,7.48-10.7,3.27-3.99,6.94-7.74,10.96-11.2,9.18-7.92,20.14-14.29,32.31-18.64,11.72-4.19,24.58-6.5,38.07-6.5s26.35,2.31,38.06,6.5c12.17,4.35,23.13,10.72,32.31,18.64h0c1.49,1.28,2.96,2.63,4.39,4.04"/>
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/mpacre/" target="_blank" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-[#953E34]/10 hover:text-[#953E34] transition-all" title="Instagram">
+                    <iconify-icon icon="mdi:instagram" width="18" height="18"></iconify-icon>
+                </a>
+                <a href="https://www.facebook.com/mpacre/" target="_blank" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-[#953E34]/10 hover:text-[#953E34] transition-all" title="Facebook">
+                    <iconify-icon icon="mdi:facebook" width="18" height="18"></iconify-icon>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // 1. Initialize Iconify (No script needed, web component handles itself)
+        
+        // 2. Set Current Year in Footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 3. Mobile Menu Toggle Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        let isMenuOpen = false;
+
+        mobileMenuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.setAttribute('icon', 'solar:close-circle-linear');
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.setAttribute('icon', 'solar:hamburger-menu-linear');
+            }
+        });
+
+        // 4. Parallax Hero Effect
+        const heroBg = document.getElementById('hero-bg');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            if (heroBg && scrolled < 1000) { 
+                heroBg.style.transform = `translateY(${scrolled * 0.4}px)`;
+            }
+        });
+
+        // 5. Chart.js Implementation
+        const ctx = document.getElementById('projectChart').getContext('2d');
+        const projectChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                datasets: [{
+                    data: [4, 7, 5, 12, 9, 15],
+                    backgroundColor: [
+                        '#953E34', '#A54F46', '#953E34', '#A54F46', '#953E34', '#A54F46'
+                    ],
+                    borderRadius: 4,
+                    barThickness: 'flex',
+                    maxBarThickness: 40
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        titleColor: '#1e293b',
+                        bodyColor: '#1e293b',
+                        borderColor: '#e2e8f0',
+                        borderWidth: 1,
+                        padding: 10,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return `Projetos: ${context.raw}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false, drawBorder: false },
+                        ticks: {
+                            color: '#94a3b8',
+                            font: { size: 12, family: "'Noto Sans', sans-serif" }
+                        }
+                    },
+                    y: { display: false, grid: { display: false } }
+                },
+                layout: { padding: { top: 10 } }
+            }
+        });
+    </script>
+</body>
+</html>
