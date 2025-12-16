@@ -348,21 +348,18 @@
                     <h2 class="text-3xl md:text-4xl font-bold text-[#1D1D1F] tracking-tight">Painel BI</h2>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm flex-grow min-h-[300px] flex flex-col justify-between">
-                   <div class="mb-4">
-                      <h4 class="text-lg font-semibold text-slate-700">Projetos Ativos</h4>
-                      <p class="text-slate-400 text-sm">Visão geral do semestre</p>
-                   </div>
-                   
-                   <!-- Chart.js Canvas Container -->
-                   <div class="h-48 w-full mt-4 relative">
-                        <canvas id="projectChart"></canvas>
+                   <!-- Imagem do Painel BI -->
+                   <div class="w-full flex-1 flex items-center justify-center">
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiODFkZGFmZTEtZmU4Mi00MjU1LTkzZjMtY2Y2YjE3OWEzNWU5IiwidCI6IjI2MWE0YjE1LTZjMDgtNDg0Yy05YTYzLTdjNTg4YjA3NmFlYyJ9" target="_blank" rel="noopener noreferrer" class="block w-full group">
+                            <img src="assets/capabi.jpg" alt="Painel BI - Projetos Ativos" class="w-full h-auto rounded-lg object-cover transition-transform duration-300 group-hover:scale-[1.02] group-hover:shadow-lg cursor-pointer">
+                        </a>
                    </div>
 
                    <div class="flex items-center gap-3 mt-6 pt-6 border-t border-slate-100">
                      <div class="p-2 bg-slate-100 rounded-lg">
                         <iconify-icon icon="solar:monitor-camera-linear" width="20" height="20" class="text-slate-500"></iconify-icon>
                      </div>
-                     <p className="text-xs text-slate-500">
+                     <p class="text-xs text-slate-500">
                        Visualização de dados e métricas dos projetos em andamento.
                      </p>
                    </div>
@@ -498,55 +495,6 @@
             }
         });
 
-        // 5. Chart.js Implementation
-        const ctx = document.getElementById('projectChart').getContext('2d');
-        const projectChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-                datasets: [{
-                    data: [4, 7, 5, 12, 9, 15],
-                    backgroundColor: [
-                        '#953E34', '#A54F46', '#953E34', '#A54F46', '#953E34', '#A54F46'
-                    ],
-                    borderRadius: 4,
-                    barThickness: 'flex',
-                    maxBarThickness: 40
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: '#fff',
-                        titleColor: '#1e293b',
-                        bodyColor: '#1e293b',
-                        borderColor: '#e2e8f0',
-                        borderWidth: 1,
-                        padding: 10,
-                        displayColors: false,
-                        callbacks: {
-                            label: function(context) {
-                                return `Projetos: ${context.raw}`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: { display: false, drawBorder: false },
-                        ticks: {
-                            color: '#94a3b8',
-                            font: { size: 12, family: "'Noto Sans', sans-serif" }
-                        }
-                    },
-                    y: { display: false, grid: { display: false } }
-                },
-                layout: { padding: { top: 10 } }
-            }
-        });
 
         // 6. Carregar Notícias do MPAC
         async function carregarNoticias() {
